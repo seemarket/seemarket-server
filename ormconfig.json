@@ -1,0 +1,24 @@
+{
+  "type": "mysql",
+  "host": "3.34.44.222",
+  "port": 3306,
+  "username": "sesang06",
+  "password": "q1w2e3r4",
+  "database": "seemarket_db",
+  "synchronize": true,
+  "logging": false,
+  "entities": [
+    "src/entity/*.ts"
+  ],
+  "migrations": [
+    "src/migration/**/*.ts"
+  ],
+  "subscribers": [
+    "src/subscriber/**/*.ts"
+  ],
+  "cli": {
+    "entitiesDir": "src/entity",
+    "migrationsDir": "src/migration",
+    "subscribersDir": "src/subscriber"
+  }
+}
