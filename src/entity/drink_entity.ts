@@ -1,4 +1,5 @@
-import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { SlotEntity } from './slot_entity';
 
 @Entity({name: "drink"})
 export class DrinkEntity {
@@ -13,7 +14,7 @@ export class DrinkEntity {
   type: string;
 
   @Column()
-  prefab_url: number;
+  prefab_url: string;
 
   @Column()
   description: string;
@@ -24,4 +25,10 @@ export class DrinkEntity {
 
   @Column()
   thumbnail_url: string;
+
+
+
+
+  @OneToMany(() => SlotEntity, slotEntity => slotEntity.drink)
+  slots: SlotEntity[];
 }
