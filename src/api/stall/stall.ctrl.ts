@@ -1,5 +1,7 @@
-import { Stall } from '../../model';
+import { NotFoundResponse, Stall } from '../../model';
 import { Context } from 'koa';
+import { getRepository } from 'typeorm';
+import { StallEntity } from '../../entity';
 
 interface StallResponse {
   code: number;
@@ -8,20 +10,30 @@ interface StallResponse {
   }
 }
 
+const convertStall = function(stallEntity: StallEntity): Stall {
+  const stall: Stall = {
+    id: stallEntity.id,
+    title: stallEntity.title,
+    description: stallEntity.description,
+  }
+  return stall;
+}
+
 const read = async (ctx: Context) => {
   const { id } = ctx.params;
-  const mockingStall: Stall = {
-    id: id,
-    title: "아랫공대 CU 편의점",
-    description: "음료매대 좋아",
-  };
 
-  const mockingResponse: StallResponse = {
+  const stallRepository = getRepository(StallEntity);
+  const stallEntity = await stallRepository.findOne({ where: { id: id } });
+  if (stallEntity === undefined) {
+    ctx.body = NotFoundResponse;
+    return;
+  }
+  const response: StallResponse = {
     code: 200,
     data: {
-      stall: mockingStall
-    }
+      stall: convertStall(stallEntity),
+    },
   };
-  ctx.body = mockingResponse;
-}
+  ctx.body = response;
+};
 export { read };

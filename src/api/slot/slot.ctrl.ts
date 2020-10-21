@@ -1,5 +1,7 @@
-import { Slot } from '../../model';
+import { NotFoundResponse, Slot, Stall } from '../../model';
 import { Context } from 'koa';
+import { getRepository } from 'typeorm';
+import { DrinkEntity, SlotEntity, StallEntity } from '../../entity';
 
 interface SlotResponse {
   code: number;
@@ -15,54 +17,53 @@ interface SlotListResponse {
   }
 }
 
+const convertSlot = function(slotEntity: SlotEntity): Slot {
+  const slot: Slot = {
+    id: slotEntity.id,
+    drink_id: slotEntity.drink.id,
+    has_drink: slotEntity.has_drink,
+    incoming_time: slotEntity.incoming_time.toISOString(),
+    row: slotEntity.row,
+    column: slotEntity.column,
+    depth: slotEntity.depth,
+  };
+  return slot;
+};
 const read = async (ctx: Context) => {
   const { id } = ctx.params;
-  const mockingSlot: Slot = {
-    'id': id,
-    'drink_id': 1,
-    'has_drink': true,
-    'incoming_time': '2020-09-29T10:02:30+00:00',
-    'row': 0,
-    'column': 0,
-    'depth': 0,
-  };
-  const mockingResponse: SlotResponse = {
+  const slotRepository = getRepository(SlotEntity);
+  const slotEntity = await slotRepository.findOne(
+    {
+      where: { id: id },
+      relations: ['drink'],
+    },
+  );
+  if (slotEntity === undefined) {
+    ctx.body = NotFoundResponse;
+    return;
+  }
+
+  const response: SlotResponse = {
     code: 200,
     data: {
-      slot: mockingSlot,
+      slot: convertSlot(slotEntity),
     },
   };
-  ctx.body = mockingResponse;
+  ctx.body = response;
 };
-
-
 const list = async (ctx: Context) => {
-  const mockingSlots: Slot[] = [
-    {
-      'id': 1,
-      'drink_id': 1,
-      'has_drink': true,
-      'incoming_time': '2020-09-29T10:02:30+00:00',
-      'row': 0,
-      'column': 0,
-      'depth': 0,
+
+  const slotRepository = getRepository(SlotEntity);
+  const slotEntities = await slotRepository.find({
+      relations: ['drink'],
     },
-    {
-      'id': 2,
-      'drink_id': 2,
-      'has_drink': false,
-      'incoming_time': '2020-09-29T10:02:30+00:00',
-      'row': 0,
-      'column': 1,
-      'depth': 0,
-    },
-  ];
-  const mockingResponse: SlotListResponse = {
+  );
+  const response: SlotListResponse = {
     code: 200,
     data: {
-      slot_list: mockingSlots,
+      slot_list: slotEntities.map(convertSlot),
     },
   };
-  ctx.body = mockingResponse;
+  ctx.body = response;
 };
 export { read, list };
