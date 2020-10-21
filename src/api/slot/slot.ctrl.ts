@@ -17,7 +17,7 @@ interface SlotListResponse {
   }
 }
 
-const convertSlot = function(slotEntity: SlotEntity): Slot {
+export const convertSlot = function(slotEntity: SlotEntity): Slot {
   const slot: Slot = {
     id: slotEntity.id,
     drink_id: slotEntity.drink.id,

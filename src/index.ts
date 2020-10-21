@@ -2,6 +2,8 @@ import { Context } from 'koa';
 import Koa from 'koa';
 import Router from 'koa-router';
 import bodyParser from 'koa-bodyparser';
+import socketIO from "socket.io";
+import http from 'http';
 import api from './api';
 import { Connection, createConnection } from 'typeorm';
 createConnection().then(async connection => {
@@ -10,6 +12,8 @@ createConnection().then(async connection => {
 
 }).catch(error => console.log(error));
 const app = new Koa();
+const server = http.createServer(app.callback());
+export const io = socketIO(server);
 
 const router = new Router();
 
