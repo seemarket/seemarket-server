@@ -1,14 +1,19 @@
 import { Socket } from 'socket.io';
-import { getRepository } from 'typeorm';
+import { createConnection, getRepository } from 'typeorm';
 import { SlotEntity } from '../entity';
 import { SlotUpdate, SlotUpdateType } from '../model/slot_update';
 import { convertSlot } from '../api/slot/slot.ctrl';
-import Slot from '../model/slot';
+createConnection().then(async connection => {
+
+  console.log("Here you can setup and run express/koa/any other framework.");
+
+  fetchSlots();
+}).catch(error => console.log(error));
 
 
-const updateSlot = async (id: number, socket: Socket) => {
+const updateSlot = async (id: number) => {
   const slotRepository = getRepository(SlotEntity);
-  const slotEntity = await slotRepository.findOne({ where: { id: id } });
+  const slotEntity = await slotRepository.findOne({ where: { id: id }, relations: ['drink'], });
   if (slotEntity === undefined) {
     return;
   }
@@ -30,9 +35,28 @@ const updateSlot = async (id: number, socket: Socket) => {
     updated_slot_info : afterSlot,
     before_slot_info : beforeSlot
   };
-  socket.emit("slot_update", slotUpdate);
+  return slotUpdate;
 };
 
+const fetchSlots = async () => {
+  const slotEntityRepository = getRepository(SlotEntity);
+  const slotEntities = await slotEntityRepository.find();
+
+  const delay = async (delay: number) => {
+    return new Promise(r => {
+      setTimeout(r, delay);
+    })
+  }
+
+  for (const slotEntity of slotEntities) {
+    await delay(1000);
+    const slotResponse = await updateSlot(slotEntity.id);
+    if (slotResponse !== undefined) {
+      console.log(slotResponse);
+    }
+  }
+
+}
 
 const socketExecutor = (socket: Socket) => {
 

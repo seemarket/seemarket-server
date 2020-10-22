@@ -1,6 +1,6 @@
-import { Column, getRepository } from 'typeorm';
+import { getRepository } from 'typeorm';
 import { DrinkEntity, SlotEntity } from './entity';
-import { Connection, createConnection } from 'typeorm';
+import { createConnection } from 'typeorm';
 createConnection().then(async connection => {
 
   console.log("Here you can setup and run express/koa/any other framework.");
@@ -9,9 +9,9 @@ createConnection().then(async connection => {
 }).catch(error => console.log(error));
 
 const insertStall = async (drinkEntity: DrinkEntity, row: number, column: number, depth: number) => {
-  const slotEntity = getRepository(SlotEntity);
-  const slotEntitiy = await slotEntity.findOne({ where: { row, column, depth} });
-  if (slotEntitiy == undefined) {
+  const slotEntityRepository = getRepository(SlotEntity);
+  const slotEntity = await slotEntityRepository.findOne({ where: { row, column, depth} });
+  if (slotEntity == undefined) {
     const newSlot = new SlotEntity();
     newSlot.drink = drinkEntity;
     newSlot.has_drink = true;

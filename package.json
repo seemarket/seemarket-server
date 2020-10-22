@@ -6,6 +6,7 @@
   "scripts": {
     "start": "nodemon --exec ts-node src/index.ts",
     "slot" : "ts-node src/install_slot.ts",
+    "simulate" : "ts-node src/simulation/index.ts",
     "test": "NODE_ENV=test jest",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint --fix src/**/*.ts"
