@@ -1,8 +1,8 @@
 import Slot from './slot';
 
 export enum SlotUpdateType {
-  SOLD_OUT, // 팔림
-  ARRIVED
+  SOLD_OUT = "sold_out", // 팔림
+  ARRIVED = "arrived"
 }
 
 export interface SlotUpdate {
