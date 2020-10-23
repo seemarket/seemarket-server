@@ -1,15 +1,8 @@
-import { Socket } from 'socket.io';
-import { createConnection, getRepository } from 'typeorm';
+import { getRepository } from 'typeorm';
 import { SlotEntity } from '../entity';
 import { SlotUpdate, SlotUpdateType } from '../model/slot_update';
 import { convertSlot } from '../api/slot/slot.ctrl';
-createConnection().then(async connection => {
-
-  console.log("Here you can setup and run express/koa/any other framework.");
-
-  fetchSlots();
-}).catch(error => console.log(error));
-
+import WebSocket from 'ws';
 
 const updateSlot = async (id: number) => {
   const slotRepository = getRepository(SlotEntity);
@@ -38,7 +31,7 @@ const updateSlot = async (id: number) => {
   return slotUpdate;
 };
 
-const fetchSlots = async () => {
+const simulate = async (ws: WebSocket) => {
   const slotEntityRepository = getRepository(SlotEntity);
   const slotEntities = await slotEntityRepository.find();
 
@@ -52,24 +45,14 @@ const fetchSlots = async () => {
     await delay(1000);
     const slotResponse = await updateSlot(slotEntity.id);
     if (slotResponse !== undefined) {
-      console.log(slotResponse);
+      const data = JSON.stringify(slotResponse);
+      ws.send(data);
+      console.log(data);
     }
   }
 
 }
 
-const socketExecutor = (socket: Socket) => {
-
-  // convenience function to log server messages on the client
-  function log(input: string) {
-    console.log(input);
-    socket.emit('log', input);
-  }
-
-  socket.on('join', function(room) {
-    log('You Successfully connected!');
-  });
-
-
-
-};
+export const startSimulation = (ws: WebSocket) => {
+  simulate(ws);
+}

@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --exec ts-node src/index.ts",
-    "slot" : "ts-node src/install_slot.ts",
-    "simulate" : "ts-node src/simulation/index.ts",
+    "slot": "ts-node src/install_slot.ts",
+    "client": "ts-node src/websocket-client/index.ts",
+    "simulate": "ts-node src/simulation/index.ts",
     "test": "NODE_ENV=test jest",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint --fix src/**/*.ts"
@@ -29,7 +30,8 @@
     "mysql": "^2.18.1",
     "reflect-metadata": "^0.1.13",
     "socket.io": "^2.3.0",
-    "typeorm": "^0.2.26"
+    "typeorm": "^0.2.26",
+    "ws": "^7.3.1"
   },
   "devDependencies": {
     "@types/koa": "^2.11.4",
@@ -37,6 +39,7 @@
     "@types/koa-router": "^7.4.1",
     "@types/node": "^14.11.2",
     "@types/socket.io": "^2.1.11",
+    "@types/ws": "^7.2.7",
     "@typescript-eslint/eslint-plugin": "^4.2.0",
     "@typescript-eslint/parser": "^4.2.0",
     "eslint": "^7.9.0",

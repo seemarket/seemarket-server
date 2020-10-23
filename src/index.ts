@@ -6,15 +6,30 @@ import socketIO from "socket.io";
 import http from 'http';
 import api from './api';
 import { Connection, createConnection } from 'typeorm';
+import WebSocket from 'ws';
+import { startSimulation } from './simulation';
 createConnection().then(async connection => {
 
   console.log("Here you can setup and run express/koa/any other framework.");
 
 }).catch(error => console.log(error));
 const app = new Koa();
-const server = http.createServer(app.callback());
-export const io = socketIO(server);
+const wss = new WebSocket.Server({port: 8080});
 
+
+wss.on('connection', function connection(ws) {
+  ws.on('message', function incoming(message) {
+    const messageString = message as string;
+    switch (messageString) {
+      case 'start_simulation':
+        startSimulation(ws);
+        break;
+      default:
+        break;
+    }
+    console.log('received: %s', message);
+  });
+});
 const router = new Router();
 
 router.use('/api', api.routes());
