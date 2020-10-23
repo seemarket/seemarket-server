@@ -1,6 +1,6 @@
 {
   "type": "mysql",
-  "host": "3.34.44.222",
+  "host": "ec2-13-209-66-8.ap-northeast-2.compute.amazonaws.com",
   "port": 3306,
   "username": "sesang06",
   "password": "q1w2e3r4",

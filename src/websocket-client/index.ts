@@ -1,7 +1,7 @@
 import WebSocket from "ws";
 
 
-const localHost = "ws://localhost:8080";
+const localHost = "ws://ec2-3-34-44-222.ap-northeast-2.compute.amazonaws.com:8080";
 const client = new WebSocket(localHost);
 client.onopen = (event) => {
   console.log("open!")
