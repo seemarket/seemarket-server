@@ -15,16 +15,17 @@ createConnection().then(async connection => {
 }).catch(error => console.log(error));
 const app = new Koa();
 
-const socketServer = http.createServer();
-const io = socketIO(socketServer);
+const io = socketIO({transports: ['websocket']});
 
-io.on('connection', function(client) {
 
-  client.on('start_simulation', function(data) {
+io.attach(8080);
+
+io.on('connection', function(socket) {
+  socket.on('start_simulation', function(data) {
     startSimulation(io);
   })
 })
-socketServer.listen(8080);
+
 const router = new Router();
 
 router.use('/api', api.routes());
