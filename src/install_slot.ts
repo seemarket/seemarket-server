@@ -19,7 +19,7 @@ const insertStall = async (drinkEntity: DrinkEntity, row: number, column: number
     newSlot.row = row;
     newSlot.column = column;
     newSlot.depth = depth;
-    await slotEntity.save(newSlot);
+    await slotEntityRepository.save(newSlot);
   }
 }
 
@@ -29,12 +29,13 @@ const fetchDrinks = async () => {
   const drinkRepository = getRepository(DrinkEntity);
   const drinkEntities = await drinkRepository.find();
 
-  for (const drinkEntity of drinkEntities) {
-    const id = drinkEntity.id;
-    const row = id / 5;
-    const column = id % 5;
-    for (let depth = 0; depth < 3; depth++) {
-      await insertStall(drinkEntity, row, column, depth);
+  const drinkSize = drinkEntities.length;
+  for (let row = 0; row < 4; row++) {
+    for (let column = 0; column < 12; column++) {
+      for (let depth = 0; depth < 4; depth++) {
+       const drink = drinkEntities[(row+ column) % 5];
+       await insertStall(drink, row, column, depth);
+      }
     }
   }
 

@@ -1,20 +1,16 @@
 import WebSocket from "ws";
 
+import socketIO from "socket.io-client";
 
-const localHost = "ws://ec2-13-209-66-8.ap-northeast-2.compute.amazonaws.com:8080/";
-const client = new WebSocket(localHost);
-client.onopen = (event) => {
-  console.log("open!")
 
-  client.send("message");
-  client.send("hello world!");
-  client.send("start_simulation");
-}
-client.onmessage = (event) => {
-  const data = event.data as string;
-  console.log(data);
-}
+// const localHost = "ws://ec2-13-209-66-8.ap-northeast-2.compute.amazonaws.com:8080/";
+const localHost = "http://localhost:8080/";
 
-client.on('open', () => {
-  console.log("open!")
-});
+
+const client = socketIO.connect(localHost);
+
+
+client.emit('start_simulation');
+client.on('update', function(data: string) {
+    console.log(data);
+})

@@ -2,7 +2,7 @@ import { getRepository } from 'typeorm';
 import { SlotEntity } from '../entity';
 import { SlotUpdate, SlotUpdateType } from '../model/slot_update';
 import { convertSlot } from '../api/slot/slot.ctrl';
-import WebSocket from 'ws';
+import SocketIO from 'socket.io';
 
 const updateSlot = async (id: number) => {
   const slotRepository = getRepository(SlotEntity);
@@ -31,7 +31,7 @@ const updateSlot = async (id: number) => {
   return slotUpdate;
 };
 
-const simulate = async (ws: WebSocket) => {
+const simulate = async (socket: SocketIO.Server) => {
   const slotEntityRepository = getRepository(SlotEntity);
   const slotEntities = await slotEntityRepository.find();
 
@@ -46,13 +46,14 @@ const simulate = async (ws: WebSocket) => {
     const slotResponse = await updateSlot(slotEntity.id);
     if (slotResponse !== undefined) {
       const data = JSON.stringify(slotResponse);
-      ws.send(data);
+      socket.emit("update", data);
       console.log(data);
     }
   }
 
 }
 
-export const startSimulation = (ws: WebSocket) => {
-  simulate(ws);
+
+export const startSimulation = (socket: SocketIO.Server) => {
+  simulate(socket);
 }

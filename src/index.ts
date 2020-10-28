@@ -14,22 +14,17 @@ createConnection().then(async connection => {
 
 }).catch(error => console.log(error));
 const app = new Koa();
-const wss = new WebSocket.Server({port: 8080});
 
+const socketServer = http.createServer();
+const io = socketIO(socketServer);
 
-wss.on('connection', function connection(ws) {
-  ws.on('message', function incoming(message) {
-    const messageString = message as string;
-    switch (messageString) {
-      case 'start_simulation':
-        startSimulation(ws);
-        break;
-      default:
-        break;
-    }
-    console.log('received: %s', message);
-  });
-});
+io.on('connection', function(client) {
+
+  client.on('start_simulation', function(data) {
+    startSimulation(io);
+  })
+})
+socketServer.listen(8080);
 const router = new Router();
 
 router.use('/api', api.routes());
