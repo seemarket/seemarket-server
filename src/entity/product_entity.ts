@@ -25,7 +25,6 @@ export class ProductEntity {
   @Column('text')
   description: string;
 
-
   @Column()
   price: number;
 
@@ -33,9 +32,9 @@ export class ProductEntity {
   thumbnail_url: string;
 
   @Column({
-    type: "set",
+    type: "enum",
     enum: ProductType,
-    default: [ProductType.DRINK]
+    default: ProductType.DRINK
   })
   product_type: ProductType
 
