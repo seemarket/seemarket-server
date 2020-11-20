@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { DrinkEntity } from './drink_entity';
+import { ProductEntity } from './product_entity';
 
 @Entity({name: "slot"})
 export class SlotEntity {
@@ -8,9 +8,9 @@ export class SlotEntity {
   id: number;
 
 
-  @ManyToOne(() => DrinkEntity, drinkEntity => drinkEntity.slots)
+  @ManyToOne(() => ProductEntity, drinkEntity => drinkEntity.slots)
   @JoinColumn({ name: "drink_id" })
-  drink: DrinkEntity;
+  drink: ProductEntity;
 
   @Column()
   has_drink: boolean;

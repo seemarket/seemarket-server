@@ -5,6 +5,7 @@ import Drink from './drink';
 const api = new Router();
 
 api.use('/drink', Drink.routes());
+api.use('/product', Drink.routes());
 api.use('/slot', Slot.routes());
 api.use('/stall', Stall.routes());
 

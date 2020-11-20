@@ -1,8 +1,14 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { SlotEntity } from './slot_entity';
 
-@Entity({name: "drink"})
-export class DrinkEntity {
+export enum ProductType {
+  DRINK="DRINK",
+  SNACK="SNACK",
+  CEREAL="CEREAL",
+  BOTTLE="BOTTLE",
+}
+@Entity({name: "product"})
+export class ProductEntity {
 
   @PrimaryGeneratedColumn()
   id: number;
@@ -16,7 +22,7 @@ export class DrinkEntity {
   @Column()
   prefab_url: string;
 
-  @Column()
+  @Column('text')
   description: string;
 
 
@@ -26,8 +32,12 @@ export class DrinkEntity {
   @Column()
   thumbnail_url: string;
 
-
-
+  @Column({
+    type: "set",
+    enum: ProductType,
+    default: [ProductType.DRINK]
+  })
+  product_type: ProductType
 
   @OneToMany(() => SlotEntity, slotEntity => slotEntity.drink)
   slots: SlotEntity[];

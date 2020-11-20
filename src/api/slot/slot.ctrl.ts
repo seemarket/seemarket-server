@@ -1,7 +1,7 @@
 import { NotFoundResponse, Slot, Stall } from '../../model';
 import { Context } from 'koa';
 import { getRepository } from 'typeorm';
-import { DrinkEntity, SlotEntity, StallEntity } from '../../entity';
+import { ProductEntity, SlotEntity, StallEntity } from '../../entity';
 
 interface SlotResponse {
   code: number;
