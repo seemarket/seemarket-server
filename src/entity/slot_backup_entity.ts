@@ -1,8 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { ProductEntity } from './product_entity';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { SlotEntity } from './slot_entity';
+import { ProductEntity, ProductType } from './product_entity';
 
-@Entity({name: "slot"})
-export class SlotEntity {
+@Entity({name: "slot_backup"})
+export class SlotBackupEntity {
 
   @PrimaryGeneratedColumn()
   id: number;

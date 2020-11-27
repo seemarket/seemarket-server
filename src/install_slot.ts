@@ -1,5 +1,5 @@
 import { getRepository } from 'typeorm';
-import { DrinkEntity, SlotEntity } from './entity';
+import { ProductEntity, SlotEntity } from './entity';
 import { createConnection } from 'typeorm';
 createConnection().then(async connection => {
 
@@ -8,7 +8,7 @@ createConnection().then(async connection => {
   fetchDrinks();
 }).catch(error => console.log(error));
 
-const insertStall = async (drinkEntity: DrinkEntity, row: number, column: number, depth: number) => {
+const insertStall = async (drinkEntity: ProductEntity, row: number, column: number, depth: number) => {
   const slotEntityRepository = getRepository(SlotEntity);
   const slotEntity = await slotEntityRepository.findOne({ where: { row, column, depth} });
   if (slotEntity == undefined) {
@@ -26,14 +26,14 @@ const insertStall = async (drinkEntity: DrinkEntity, row: number, column: number
 
 
 const fetchDrinks = async () => {
-  const drinkRepository = getRepository(DrinkEntity);
+  const drinkRepository = getRepository(ProductEntity);
   const drinkEntities = await drinkRepository.find();
 
   const drinkSize = drinkEntities.length;
   for (let row = 0; row < 4; row++) {
     for (let column = 0; column < 12; column++) {
       for (let depth = 0; depth < 4; depth++) {
-       const drink = drinkEntities[(row+ column) % 5];
+       const drink = drinkEntities[(row+ column) % 7];
        await insertStall(drink, row, column, depth);
       }
     }
