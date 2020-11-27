@@ -39,8 +39,7 @@ export const initializeSimulator = async (socket: SocketIO.Server) => {
       slot_list: slotEntities.map(convertSlot),
     },
   };
-  const data = JSON.stringify(response);
 
-  socket.emit("reset_result", data);
-  console.log(data);
+  socket.emit("reset_result", response);
+  console.log(response);
 };

@@ -6,15 +6,15 @@ import { MoveCommand } from '../simulation/move_product';
 import { DeleteCommand } from '../simulation/delete_product';
 
 
-// const localHost = "http://ec2-13-209-66-8.ap-northeast-2.compute.amazonaws.com:8080/";
-const localHost = "ws://localhost:8080/";
+const localHost = "http://ec2-13-209-66-8.ap-northeast-2.compute.amazonaws.com:8080/";
+// const localHost = "ws://localhost:8080/";
 
 
 const client = socketIO.connect(localHost);
 
 
 // client.emit('start_simulation');
-// client.emit('reset_simulation');
+client.emit('reset_simulation');
 // const createCommand: CreateCommand = {
 //     product_id: 1,
 //     row: 100.0,
@@ -30,10 +30,10 @@ const client = socketIO.connect(localHost);
 //     depth: 200
 // };
 // client.emit('move_product', moveCommand);
-const deleteCommand: DeleteCommand = {
-    slot_id: 618
-}
-client.emit('delete_product', deleteCommand);
+// const deleteCommand: DeleteCommand = {
+//     slot_id: 618
+// }
+// client.emit('delete_product', deleteCommand);
 
 client.on('update', function(data: string) {
     console.log(data);

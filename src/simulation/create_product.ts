@@ -33,7 +33,6 @@ export const createProduct = async (socket: SocketIO.Server, createCommand: Crea
       slot: convertSlot(slot),
     },
   };
-  const data = JSON.stringify(response);
-  socket.emit("create_result", data);
-  console.log(data);
+  socket.emit("create_result", response);
+  console.log(response);
 };

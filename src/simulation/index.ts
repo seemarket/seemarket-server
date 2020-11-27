@@ -46,7 +46,6 @@ const simulate = async (socket: SocketIO.Server) => {
     const slotResponse = await updateSlot(slotEntity.id);
     if (slotEntity.id % 2 == 0) { continue; }
     if (slotResponse !== undefined) {
-      const data = JSON.stringify(slotResponse);
       socket.emit("update", slotResponse);
       console.log(slotResponse);
     }

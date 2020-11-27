@@ -16,7 +16,6 @@ export const deleteProduct = async (socket: SocketIO.Server, deleteCommand: Dele
       slot_id: deleteCommand.slot_id
     },
   };
-  const data = JSON.stringify(response);
-  socket.emit("delete_result", data);
-  console.log(data);
+  socket.emit("delete_result", response);
+  console.log(response);
 };

@@ -33,7 +33,6 @@ export const moveProduct = async (socket: SocketIO.Server, moveCommand: MoveComm
       slot: convertSlot(slotEntity),
     },
   };
-  const data = JSON.stringify(response);
-  socket.emit("move_result", data);
-  console.log(data);
+  socket.emit("move_result", response);
+  console.log(response);
 };
