@@ -10,6 +10,8 @@ import WebSocket from 'ws';
 import { startSimulation } from './simulation';
 import { initializeSimulator } from './simulation/initialize_stall';
 import { createProduct } from './simulation/create_product';
+import { moveProduct } from './simulation/move_product';
+import { deleteProduct } from './simulation/delete_product';
 createConnection().then(async connection => {
 
   console.log("Here you can setup and run express/koa/any other framework.");
@@ -29,8 +31,14 @@ io.on('connection', function(socket) {
   socket.on('reset_simulation',  function(data) {
     initializeSimulator(io);
   })
-  socket.on("create_product", function(data) {
+  socket.on('create_product', function(data) {
     createProduct(io, data);
+  })
+  socket.on('move_product', function(data) {
+    moveProduct(io, data);
+  })
+  socket.on('delete_product', function(data) {
+    deleteProduct(io, data);
   })
 })
 

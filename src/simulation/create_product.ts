@@ -27,8 +27,6 @@ export const createProduct = async (socket: SocketIO.Server, createCommand: Crea
   slot.has_drink = true;
   slot.drink = product;
   await slotRepository.insert(slot);
-
-
   const response = {
     code: 200,
     data: {
