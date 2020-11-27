@@ -6,6 +6,7 @@ export enum ProductType {
   SNACK="SNACK",
   CEREAL="CEREAL",
   BOTTLE="BOTTLE",
+  SANDWICH="SANDWICH",
 }
 @Entity({name: "product"})
 export class ProductEntity {
