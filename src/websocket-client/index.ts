@@ -6,15 +6,31 @@ import { MoveCommand } from '../simulation/move_product';
 import { DeleteCommand } from '../simulation/delete_product';
 
 
-const localHost = "http://ec2-13-209-66-8.ap-northeast-2.compute.amazonaws.com:8080/";
-// const localHost = "ws://localhost:8080/";
+// const localHost = "http://ec2-13-209-66-8.ap-northeast-2.compute.amazonaws.com:8080/";
+const localHost = "ws://localhost:8080/";
 
 
 const client = socketIO.connect(localHost);
 
+const delay = async (delay: number) => {
+    return new Promise(r => {
+        setTimeout(r, delay);
+    })
+}
+(async function () {
+    client.emit('start_simulation');
+    await delay(4000);
+    client.emit('move_simulation');
+    await delay(4000);
+    client.emit('change_simulation');
+    await delay(4000);
+    client.emit('stop_simulation');
 
-// client.emit('start_simulation');
-client.emit('reset_simulation');
+})();
+
+
+
+// client.emit('reset_simulation');
 // const createCommand: CreateCommand = {
 //     product_id: 1,
 //     row: 100.0,
@@ -35,20 +51,22 @@ client.emit('reset_simulation');
 // }
 // client.emit('delete_product', deleteCommand);
 
-client.on('update', function(data: string) {
-    console.log(data);
-})
-
-client.on('reset_result', function(data: string) {
-    console.log(data);
-})
-
-client.on('create_result', function(data: string) {
-    console.log(data);
-})
-client.on('delete_result', function(data: string) {
-    console.log(data);
-})
-client.on('move_result', function(data: string) {
-    console.log(data);
-})
+// console.log("START!!");
+//
+// client.on('update', function(data: string) {
+//     console.log(data);
+// })
+//
+// client.on('reset_result', function(data: string) {
+//     console.log(data);
+// })
+//
+// client.on('create_result', function(data: string) {
+//     console.log(data);
+// })
+// client.on('delete_result', function(data: string) {
+//     console.log(data);
+// })
+// client.on('move_result', function(data: string) {
+//     console.log(data);
+// })

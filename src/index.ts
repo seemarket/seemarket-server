@@ -7,7 +7,7 @@ import http from 'http';
 import api from './api';
 import { Connection, createConnection } from 'typeorm';
 import WebSocket from 'ws';
-import { startSimulation } from './simulation';
+import { changeSimulation, moveSimulation, startSimulation, stopSimulation } from './simulation';
 import { initializeSimulator } from './simulation/initialize_stall';
 import { createProduct } from './simulation/create_product';
 import { moveProduct } from './simulation/move_product';
@@ -27,6 +27,15 @@ io.attach(8080);
 io.on('connection', function(socket) {
   socket.on('start_simulation', function(data) {
     startSimulation(io);
+  })
+  socket.on('move_simulation', function(data) {
+    moveSimulation(io);
+  })
+  socket.on('change_simulation', function(data) {
+    changeSimulation(io);
+  })
+  socket.on('stop_simulation', function(data) {
+    stopSimulation(io);
   })
   socket.on('reset_simulation',  function(data) {
     initializeSimulator(io);
