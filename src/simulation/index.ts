@@ -115,7 +115,7 @@ const simulate = async (socket: SocketIO.Server, simulateID: number) => {
 
 
   for (const slotEntity of slotEntities) {
-    await delay(1000);
+    await delay(100);
     console.log(currentID);
     console.log(simulateID);
     if (simulateID !== currentID) return;
@@ -133,7 +133,7 @@ const move = async (socket: SocketIO.Server, simulateID: number) => {
   const slotEntities = await slotEntityRepository.find();
 
   for (const slotEntity of slotEntities) {
-    await delay(1000);
+    await delay(100);
     if (simulateID !== currentID) return;
     if (!slotEntity.has_drink) continue;
     const slotResponse = await moveSlot(slotEntity.id);
@@ -149,7 +149,7 @@ const change = async (socket: SocketIO.Server, simulateID: number) => {
   const slotEntities = await slotEntityRepository.find();
 
   for (const slotEntity of slotEntities) {
-    await delay(1000);
+    await delay(100);
     if (simulateID !== currentID) return;
     if (!slotEntity.has_drink) continue;
     const slotResponse = await changeSlot(slotEntity.id);
