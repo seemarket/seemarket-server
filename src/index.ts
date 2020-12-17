@@ -12,6 +12,7 @@ import { initializeSimulator } from './simulation/initialize_stall';
 import { createProduct } from './simulation/create_product';
 import { moveProduct } from './simulation/move_product';
 import { deleteProduct } from './simulation/delete_product';
+import { priceSimulate } from './simulation/price_simulate';
 createConnection().then(async connection => {
 
   console.log("Here you can setup and run express/koa/any other framework.");
@@ -25,6 +26,9 @@ const io = socketIO({transports: ['websocket']});
 io.attach(8080);
 
 io.on('connection', function(socket) {
+  socket.on('price', function(data) {
+    priceSimulate(io);
+  })
   socket.on('start_simulation', function(data) {
     startSimulation(io);
   })

@@ -12,3 +12,7 @@ export interface SlotUpdate {
   updated_slot_info : Slot;
   before_slot_info : Slot;
 }
+
+export interface PriceUpdate {
+  price: number;
+}

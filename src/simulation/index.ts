@@ -4,6 +4,16 @@ import { SlotUpdate, SlotUpdateType } from '../model/slot_update';
 import { convertSlot } from '../api/slot/slot.ctrl';
 import SocketIO from 'socket.io';
 
+function shuffle(a: SlotEntity[]) {
+  let j, x, i;
+  for (i = a.length; i; i -= 1) {
+    j = Math.floor(Math.random() * i);
+    x = a[i - 1];
+    a[i - 1] = a[j];
+    a[j] = x;
+  }
+  return a;
+}
 
 const delay = async (delay: number) => {
   return new Promise(r => {
@@ -58,8 +68,11 @@ const moveSlot = async (id: number) => {
   const beforeSlotEntity = { ...slotEntity };
 
   const beforeSlot = convertSlot(beforeSlotEntity);
-
-  slotEntity.row = Math.min(Number(slotEntity.row) + moveOffset, moveLimitMaxX);
+  if (getRandomInt(0, 2) == 0) {
+    slotEntity.row = Math.min(Number(slotEntity.row) + moveOffset, moveLimitMaxX);
+  } else {
+    slotEntity.row = Math.max(Number(slotEntity.row) - moveOffset, moveLimitMinX);
+  }
   await slotRepository.save(slotEntity);
 
   const afterSlot = convertSlot(slotEntity);
@@ -114,7 +127,8 @@ const simulate = async (socket: SocketIO.Server, simulateID: number) => {
   const slotEntities = await slotEntityRepository.find();
 
 
-  for (const slotEntity of slotEntities) {
+  const suffledEntities = shuffle(slotEntities);
+  for (const slotEntity of suffledEntities) {
     await delay(100);
     console.log(currentID);
     console.log(simulateID);
@@ -132,7 +146,10 @@ const move = async (socket: SocketIO.Server, simulateID: number) => {
   const slotEntityRepository = getRepository(SlotEntity);
   const slotEntities = await slotEntityRepository.find();
 
-  for (const slotEntity of slotEntities) {
+  const suffledEntities = shuffle(slotEntities.filter(slot => {
+    return slot.has_drink;
+  }));
+  for (const slotEntity of suffledEntities) {
     await delay(100);
     if (simulateID !== currentID) return;
     if (!slotEntity.has_drink) continue;
@@ -148,7 +165,11 @@ const change = async (socket: SocketIO.Server, simulateID: number) => {
   const slotEntityRepository = getRepository(SlotEntity);
   const slotEntities = await slotEntityRepository.find();
 
-  for (const slotEntity of slotEntities) {
+  const suffledEntities = shuffle(slotEntities.filter(slot => {
+    return slot.has_drink;
+  }));
+
+  for (const slotEntity of suffledEntities) {
     await delay(100);
     if (simulateID !== currentID) return;
     if (!slotEntity.has_drink) continue;

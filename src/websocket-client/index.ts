@@ -18,13 +18,15 @@ const delay = async (delay: number) => {
     })
 }
 (async function () {
-    client.emit('start_simulation');
-    await delay(4000);
-    client.emit('move_simulation');
-    await delay(4000);
-    client.emit('change_simulation');
-    await delay(4000);
-    client.emit('stop_simulation');
+    client.emit('price')
+    //
+    // client.emit('start_simulation');
+    // await delay(4000);
+    // client.emit('move_simulation');
+    // await delay(4000);
+    // client.emit('change_simulation');
+    // await delay(4000);
+    // client.emit('stop_simulation');
 
 })();
 
