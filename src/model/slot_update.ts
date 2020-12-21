@@ -14,5 +14,5 @@ export interface SlotUpdate {
 }
 
 export interface PriceUpdate {
-  price: number;
+  price: string;
 }

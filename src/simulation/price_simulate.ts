@@ -95,7 +95,7 @@ export const priceSimulate = async (socket: SocketIO.Server) => {
 
   const price = await getPrices();
   const priceOutput: PriceUpdate = {
-    price: price
+    price: price.toLocaleString('fullwide', {useGrouping:false})
   };
   socket.emit("price", priceOutput);
   console.log(priceOutput);
